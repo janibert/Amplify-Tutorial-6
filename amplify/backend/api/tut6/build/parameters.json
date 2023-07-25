@@ -1,0 +1,7 @@
+{
+    "AppSyncApiName": "tut6",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "S3DeploymentBucket": "amplify-tut6-staging-230358-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/462f37ac9500d5f5b447795121094df198c3243d"
+}

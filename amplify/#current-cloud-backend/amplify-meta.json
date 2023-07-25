@@ -1,0 +1,90 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tut6-staging-230358-authRole",
+      "UnauthRoleArn": "arn:aws:iam::200818803380:role/amplify-tut6-staging-230358-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::200818803380:role/amplify-tut6-staging-230358-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-tut6-staging-230358-deployment",
+      "UnauthRoleName": "amplify-tut6-staging-230358-unauthRole",
+      "StackName": "amplify-tut6-staging-230358",
+      "StackId": "arn:aws:cloudformation:eu-west-1:200818803380:stack/amplify-tut6-staging-230358/5f9371b0-2a76-11ee-8921-02a7d3317513",
+      "AmplifyAppId": "d1svx9o5fj5pq1"
+    }
+  },
+  "api": {
+    "tut6": {
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
+            },
+            "authenticationType": "API_KEY"
+          }
+        },
+        "GraphQLAPIIdOutput": "mehvhbaqebg27g6oc5pon347d4",
+        "GraphQLAPIEndpointOutput": "https://r3nobx66snalbo7yhwmchkxst4.appsync-api.eu-west-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-3qcixugx6vb2tnwtnzuzvhuh6e"
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync",
+      "lastPushTimeStamp": "2023-07-24T23:26:03.710Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-tut6-staging-230358-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apitut6"
+      }
+    }
+  },
+  "auth": {
+    "tut6": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [
+          "EMAIL",
+          "NAME"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 6,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-tut6-staging-230358-deployment/amplify-cfn-templates/auth/tut6-cloudformation-template.json",
+        "logicalId": "authtut6"
+      },
+      "lastPushTimeStamp": "2023-07-24T23:26:03.765Z",
+      "output": {
+        "UserPoolId": "eu-west-1_B8SXwPAHv",
+        "AppClientIDWeb": "ofk9aiui4hfjh96vcrjgr09ei",
+        "AppClientID": "42jlkjod8qa1nqlf5p81483cf0",
+        "IdentityPoolId": "eu-west-1:83131d94-ed90-40e4-8a91-0b01ac05d33d",
+        "UserPoolArn": "arn:aws:cognito-idp:eu-west-1:200818803380:userpool/eu-west-1_B8SXwPAHv",
+        "IdentityPoolName": "testAuthIdentityPool__staging",
+        "UserPoolName": "tut6"
+      },
+      "lastPushDirHash": "gLouPIkru20tCkKCY69zpcVUQKc="
+    }
+  }
+}

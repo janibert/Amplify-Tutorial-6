@@ -1,0 +1,508 @@
+{
+  "Resources": {
+    "TeilnehmerVeranstaltungteilnehmerauth0FunctionTeilnehmerVeranstaltungteilnehmerauth0FunctionAppSyncFunction2F30507E": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "TeilnehmerVeranstaltungteilnehmerauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/TeilnehmerVeranstaltung.teilnehmer.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
+      }
+    },
+    "TeilnehmerVeranstaltungTeilnehmerDataResolverFnTeilnehmerVeranstaltungTeilnehmerDataResolverFnAppSyncFunctionF56F851B": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackTeilnehmerNestedStackTeilnehmerNestedStackResource544F4126OutputstransformerrootstackTeilnehmerTeilnehmerDataSource69714185Name"
+        },
+        "Name": "TeilnehmerVeranstaltungTeilnehmerDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/TeilnehmerVeranstaltung.teilnehmer.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/TeilnehmerVeranstaltung.teilnehmer.res.vtl"
+            ]
+          ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "AUTOMERGE"
+        }
+      }
+    },
+    "TeilnehmerVeranstaltungteilnehmerResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "teilnehmer",
+        "TypeName": "TeilnehmerVeranstaltung",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "TeilnehmerVeranstaltungteilnehmerauth0FunctionTeilnehmerVeranstaltungteilnehmerauth0FunctionAppSyncFunction2F30507E",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "TeilnehmerVeranstaltungTeilnehmerDataResolverFnTeilnehmerVeranstaltungTeilnehmerDataResolverFnAppSyncFunctionF56F851B",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"TeilnehmerVeranstaltung\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"teilnehmer\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackTeilnehmerNestedStackTeilnehmerNestedStackResource544F4126OutputstransformerrootstackTeilnehmerTeilnehmerTable32965CADRef"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"deltaSyncTableTtl\", \"30\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":assumed-role/",
+              {
+                "Ref": "referencetotransformerrootstackauthRoleNameFB872D50Ref"
+              },
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":assumed-role/",
+              {
+                "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
+              },
+              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "TeilnehmerVeranstaltungVeranstaltungDataResolverFnTeilnehmerVeranstaltungVeranstaltungDataResolverFnAppSyncFunction094EFAAA": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackVeranstaltungNestedStackVeranstaltungNestedStackResource55F8BB78OutputstransformerrootstackVeranstaltungVeranstaltungDataSource8869D0DCName"
+        },
+        "Name": "TeilnehmerVeranstaltungVeranstaltungDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/TeilnehmerVeranstaltung.veranstaltung.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/TeilnehmerVeranstaltung.veranstaltung.res.vtl"
+            ]
+          ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "AUTOMERGE"
+        }
+      }
+    },
+    "TeilnehmerVeranstaltungveranstaltungResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "veranstaltung",
+        "TypeName": "TeilnehmerVeranstaltung",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "TeilnehmerVeranstaltungteilnehmerauth0FunctionTeilnehmerVeranstaltungteilnehmerauth0FunctionAppSyncFunction2F30507E",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "TeilnehmerVeranstaltungVeranstaltungDataResolverFnTeilnehmerVeranstaltungVeranstaltungDataResolverFnAppSyncFunction094EFAAA",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"TeilnehmerVeranstaltung\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"veranstaltung\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackVeranstaltungNestedStackVeranstaltungNestedStackResource55F8BB78OutputstransformerrootstackVeranstaltungVeranstaltungTable4649670DRef"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"deltaSyncTableTtl\", \"30\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":assumed-role/",
+              {
+                "Ref": "referencetotransformerrootstackauthRoleNameFB872D50Ref"
+              },
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":assumed-role/",
+              {
+                "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
+              },
+              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "TeilnehmerAngemeldetDataResolverFnTeilnehmerAngemeldetDataResolverFnAppSyncFunctionD4F5754B": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackTeilnehmerVeranstaltungNestedStackTeilnehmerVeranstaltungNestedStackResourceB2A93704OutputstransformerrootstackTeilnehmerVeranstaltungTeilnehmerVeranstaltungDataSourceAA4BB86FName"
+        },
+        "Name": "TeilnehmerAngemeldetDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Teilnehmer.angemeldet.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Teilnehmer.angemeldet.res.vtl"
+            ]
+          ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "AUTOMERGE"
+        }
+      }
+    },
+    "TeilnehmerangemeldetResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "angemeldet",
+        "TypeName": "Teilnehmer",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "TeilnehmerVeranstaltungteilnehmerauth0FunctionTeilnehmerVeranstaltungteilnehmerauth0FunctionAppSyncFunction2F30507E",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "TeilnehmerAngemeldetDataResolverFnTeilnehmerAngemeldetDataResolverFnAppSyncFunctionD4F5754B",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Teilnehmer\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"angemeldet\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackTeilnehmerVeranstaltungNestedStackTeilnehmerVeranstaltungNestedStackResourceB2A93704OutputstransformerrootstackTeilnehmerVeranstaltungTeilnehmerVeranstaltungTable1300D2AERef"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"deltaSyncTableTtl\", \"30\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":assumed-role/",
+              {
+                "Ref": "referencetotransformerrootstackauthRoleNameFB872D50Ref"
+              },
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":assumed-role/",
+              {
+                "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
+              },
+              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "VeranstaltungTeilnehmersDataResolverFnVeranstaltungTeilnehmersDataResolverFnAppSyncFunction6EF50284": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackTeilnehmerVeranstaltungNestedStackTeilnehmerVeranstaltungNestedStackResourceB2A93704OutputstransformerrootstackTeilnehmerVeranstaltungTeilnehmerVeranstaltungDataSourceAA4BB86FName"
+        },
+        "Name": "VeranstaltungTeilnehmersDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Veranstaltung.teilnehmers.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Veranstaltung.teilnehmers.res.vtl"
+            ]
+          ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "AUTOMERGE"
+        }
+      }
+    },
+    "VeranstaltungteilnehmersResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "teilnehmers",
+        "TypeName": "Veranstaltung",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "TeilnehmerVeranstaltungteilnehmerauth0FunctionTeilnehmerVeranstaltungteilnehmerauth0FunctionAppSyncFunction2F30507E",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "VeranstaltungTeilnehmersDataResolverFnVeranstaltungTeilnehmersDataResolverFnAppSyncFunction6EF50284",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Veranstaltung\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"teilnehmers\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackTeilnehmerVeranstaltungNestedStackTeilnehmerVeranstaltungNestedStackResourceB2A93704OutputstransformerrootstackTeilnehmerVeranstaltungTeilnehmerVeranstaltungTable1300D2AERef"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"deltaSyncTableTtl\", \"30\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":assumed-role/",
+              {
+                "Ref": "referencetotransformerrootstackauthRoleNameFB872D50Ref"
+              },
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":assumed-role/",
+              {
+                "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
+              },
+              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    }
+  },
+  "Parameters": {
+    "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackTeilnehmerNestedStackTeilnehmerNestedStackResource544F4126OutputstransformerrootstackTeilnehmerTeilnehmerDataSource69714185Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackTeilnehmerNestedStackTeilnehmerNestedStackResource544F4126OutputstransformerrootstackTeilnehmerTeilnehmerTable32965CADRef": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackauthRoleNameFB872D50Ref": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackunauthRoleName49F3C1FERef": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackVeranstaltungNestedStackVeranstaltungNestedStackResource55F8BB78OutputstransformerrootstackVeranstaltungVeranstaltungDataSource8869D0DCName": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackVeranstaltungNestedStackVeranstaltungNestedStackResource55F8BB78OutputstransformerrootstackVeranstaltungVeranstaltungTable4649670DRef": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackTeilnehmerVeranstaltungNestedStackTeilnehmerVeranstaltungNestedStackResourceB2A93704OutputstransformerrootstackTeilnehmerVeranstaltungTeilnehmerVeranstaltungDataSourceAA4BB86FName": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackTeilnehmerVeranstaltungNestedStackTeilnehmerVeranstaltungNestedStackResourceB2A93704OutputstransformerrootstackTeilnehmerVeranstaltungTeilnehmerVeranstaltungTable1300D2AERef": {
+      "Type": "String"
+    }
+  }
+}

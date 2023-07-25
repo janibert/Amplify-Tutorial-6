@@ -1,0 +1,14 @@
+type Teilnehmer @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Email: AWSEmail
+  Name: String
+  angemeldet: [Veranstaltung] @manyToMany(relationName: "TeilnehmerVeranstaltung")
+}
+
+type Veranstaltung @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Name: String
+  Teilnehmerlimit: Int
+  Termin: AWSDate
+  teilnehmers: [Teilnehmer] @manyToMany(relationName: "TeilnehmerVeranstaltung")
+}

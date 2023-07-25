@@ -1,0 +1,389 @@
+type Teilnehmer @aws_iam @aws_api_key {
+  id: ID!
+  Email: AWSEmail
+  Name: String
+  angemeldet(filter: ModelTeilnehmerVeranstaltungFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelTeilnehmerVeranstaltungConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+type Veranstaltung @aws_iam @aws_api_key {
+  id: ID!
+  Name: String
+  Teilnehmerlimit: Int
+  Termin: AWSDate
+  teilnehmers(filter: ModelTeilnehmerVeranstaltungFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelTeilnehmerVeranstaltungConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+type TeilnehmerVeranstaltung @aws_iam @aws_api_key {
+  id: ID!
+  teilnehmerId: ID!
+  veranstaltungId: ID!
+  teilnehmer: Teilnehmer!
+  veranstaltung: Veranstaltung!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelTeilnehmerConnection @aws_api_key @aws_iam {
+  items: [Teilnehmer]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelTeilnehmerFilterInput {
+  id: ModelIDInput
+  Email: ModelStringInput
+  Name: ModelStringInput
+  and: [ModelTeilnehmerFilterInput]
+  or: [ModelTeilnehmerFilterInput]
+  not: ModelTeilnehmerFilterInput
+  _deleted: ModelBooleanInput
+}
+
+type Query {
+  getTeilnehmer(id: ID!): Teilnehmer @aws_api_key @aws_iam
+  listTeilnehmers(filter: ModelTeilnehmerFilterInput, limit: Int, nextToken: String): ModelTeilnehmerConnection @aws_api_key @aws_iam
+  syncTeilnehmers(filter: ModelTeilnehmerFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelTeilnehmerConnection @aws_api_key @aws_iam
+  getVeranstaltung(id: ID!): Veranstaltung @aws_api_key @aws_iam
+  listVeranstaltungs(filter: ModelVeranstaltungFilterInput, limit: Int, nextToken: String): ModelVeranstaltungConnection @aws_api_key @aws_iam
+  syncVeranstaltungs(filter: ModelVeranstaltungFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelVeranstaltungConnection @aws_api_key @aws_iam
+  getTeilnehmerVeranstaltung(id: ID!): TeilnehmerVeranstaltung @aws_api_key @aws_iam
+  listTeilnehmerVeranstaltungs(filter: ModelTeilnehmerVeranstaltungFilterInput, limit: Int, nextToken: String): ModelTeilnehmerVeranstaltungConnection @aws_api_key @aws_iam
+  syncTeilnehmerVeranstaltungs(filter: ModelTeilnehmerVeranstaltungFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelTeilnehmerVeranstaltungConnection @aws_api_key @aws_iam
+  teilnehmerVeranstaltungsByTeilnehmerId(teilnehmerId: ID!, sortDirection: ModelSortDirection, filter: ModelTeilnehmerVeranstaltungFilterInput, limit: Int, nextToken: String): ModelTeilnehmerVeranstaltungConnection @aws_api_key @aws_iam
+  teilnehmerVeranstaltungsByVeranstaltungId(veranstaltungId: ID!, sortDirection: ModelSortDirection, filter: ModelTeilnehmerVeranstaltungFilterInput, limit: Int, nextToken: String): ModelTeilnehmerVeranstaltungConnection @aws_api_key @aws_iam
+}
+
+input ModelTeilnehmerConditionInput {
+  Email: ModelStringInput
+  Name: ModelStringInput
+  and: [ModelTeilnehmerConditionInput]
+  or: [ModelTeilnehmerConditionInput]
+  not: ModelTeilnehmerConditionInput
+  _deleted: ModelBooleanInput
+}
+
+input CreateTeilnehmerInput {
+  id: ID
+  Email: AWSEmail
+  Name: String
+  _version: Int
+}
+
+input UpdateTeilnehmerInput {
+  id: ID!
+  Email: AWSEmail
+  Name: String
+  _version: Int
+}
+
+input DeleteTeilnehmerInput {
+  id: ID!
+  _version: Int
+}
+
+type Mutation {
+  createTeilnehmer(input: CreateTeilnehmerInput!, condition: ModelTeilnehmerConditionInput): Teilnehmer @aws_api_key @aws_iam
+  updateTeilnehmer(input: UpdateTeilnehmerInput!, condition: ModelTeilnehmerConditionInput): Teilnehmer @aws_api_key @aws_iam
+  deleteTeilnehmer(input: DeleteTeilnehmerInput!, condition: ModelTeilnehmerConditionInput): Teilnehmer @aws_api_key @aws_iam
+  createVeranstaltung(input: CreateVeranstaltungInput!, condition: ModelVeranstaltungConditionInput): Veranstaltung @aws_api_key @aws_iam
+  updateVeranstaltung(input: UpdateVeranstaltungInput!, condition: ModelVeranstaltungConditionInput): Veranstaltung @aws_api_key @aws_iam
+  deleteVeranstaltung(input: DeleteVeranstaltungInput!, condition: ModelVeranstaltungConditionInput): Veranstaltung @aws_api_key @aws_iam
+  createTeilnehmerVeranstaltung(input: CreateTeilnehmerVeranstaltungInput!, condition: ModelTeilnehmerVeranstaltungConditionInput): TeilnehmerVeranstaltung @aws_api_key @aws_iam
+  updateTeilnehmerVeranstaltung(input: UpdateTeilnehmerVeranstaltungInput!, condition: ModelTeilnehmerVeranstaltungConditionInput): TeilnehmerVeranstaltung @aws_api_key @aws_iam
+  deleteTeilnehmerVeranstaltung(input: DeleteTeilnehmerVeranstaltungInput!, condition: ModelTeilnehmerVeranstaltungConditionInput): TeilnehmerVeranstaltung @aws_api_key @aws_iam
+}
+
+input ModelSubscriptionTeilnehmerFilterInput {
+  id: ModelSubscriptionIDInput
+  Email: ModelSubscriptionStringInput
+  Name: ModelSubscriptionStringInput
+  and: [ModelSubscriptionTeilnehmerFilterInput]
+  or: [ModelSubscriptionTeilnehmerFilterInput]
+  _deleted: ModelBooleanInput
+}
+
+type Subscription {
+  onCreateTeilnehmer(filter: ModelSubscriptionTeilnehmerFilterInput): Teilnehmer @aws_subscribe(mutations: ["createTeilnehmer"]) @aws_api_key @aws_iam
+  onUpdateTeilnehmer(filter: ModelSubscriptionTeilnehmerFilterInput): Teilnehmer @aws_subscribe(mutations: ["updateTeilnehmer"]) @aws_api_key @aws_iam
+  onDeleteTeilnehmer(filter: ModelSubscriptionTeilnehmerFilterInput): Teilnehmer @aws_subscribe(mutations: ["deleteTeilnehmer"]) @aws_api_key @aws_iam
+  onCreateVeranstaltung(filter: ModelSubscriptionVeranstaltungFilterInput): Veranstaltung @aws_subscribe(mutations: ["createVeranstaltung"]) @aws_api_key @aws_iam
+  onUpdateVeranstaltung(filter: ModelSubscriptionVeranstaltungFilterInput): Veranstaltung @aws_subscribe(mutations: ["updateVeranstaltung"]) @aws_api_key @aws_iam
+  onDeleteVeranstaltung(filter: ModelSubscriptionVeranstaltungFilterInput): Veranstaltung @aws_subscribe(mutations: ["deleteVeranstaltung"]) @aws_api_key @aws_iam
+  onCreateTeilnehmerVeranstaltung(filter: ModelSubscriptionTeilnehmerVeranstaltungFilterInput): TeilnehmerVeranstaltung @aws_subscribe(mutations: ["createTeilnehmerVeranstaltung"]) @aws_api_key @aws_iam
+  onUpdateTeilnehmerVeranstaltung(filter: ModelSubscriptionTeilnehmerVeranstaltungFilterInput): TeilnehmerVeranstaltung @aws_subscribe(mutations: ["updateTeilnehmerVeranstaltung"]) @aws_api_key @aws_iam
+  onDeleteTeilnehmerVeranstaltung(filter: ModelSubscriptionTeilnehmerVeranstaltungFilterInput): TeilnehmerVeranstaltung @aws_subscribe(mutations: ["deleteTeilnehmerVeranstaltung"]) @aws_api_key @aws_iam
+}
+
+type ModelVeranstaltungConnection @aws_api_key @aws_iam {
+  items: [Veranstaltung]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelVeranstaltungFilterInput {
+  id: ModelIDInput
+  Name: ModelStringInput
+  Teilnehmerlimit: ModelIntInput
+  Termin: ModelStringInput
+  and: [ModelVeranstaltungFilterInput]
+  or: [ModelVeranstaltungFilterInput]
+  not: ModelVeranstaltungFilterInput
+  _deleted: ModelBooleanInput
+}
+
+input ModelVeranstaltungConditionInput {
+  Name: ModelStringInput
+  Teilnehmerlimit: ModelIntInput
+  Termin: ModelStringInput
+  and: [ModelVeranstaltungConditionInput]
+  or: [ModelVeranstaltungConditionInput]
+  not: ModelVeranstaltungConditionInput
+  _deleted: ModelBooleanInput
+}
+
+input CreateVeranstaltungInput {
+  id: ID
+  Name: String
+  Teilnehmerlimit: Int
+  Termin: AWSDate
+  _version: Int
+}
+
+input UpdateVeranstaltungInput {
+  id: ID!
+  Name: String
+  Teilnehmerlimit: Int
+  Termin: AWSDate
+  _version: Int
+}
+
+input DeleteVeranstaltungInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionVeranstaltungFilterInput {
+  id: ModelSubscriptionIDInput
+  Name: ModelSubscriptionStringInput
+  Teilnehmerlimit: ModelSubscriptionIntInput
+  Termin: ModelSubscriptionStringInput
+  and: [ModelSubscriptionVeranstaltungFilterInput]
+  or: [ModelSubscriptionVeranstaltungFilterInput]
+  _deleted: ModelBooleanInput
+}
+
+type ModelTeilnehmerVeranstaltungConnection @aws_iam @aws_api_key {
+  items: [TeilnehmerVeranstaltung]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelTeilnehmerVeranstaltungFilterInput {
+  id: ModelIDInput
+  teilnehmerId: ModelIDInput
+  veranstaltungId: ModelIDInput
+  and: [ModelTeilnehmerVeranstaltungFilterInput]
+  or: [ModelTeilnehmerVeranstaltungFilterInput]
+  not: ModelTeilnehmerVeranstaltungFilterInput
+  _deleted: ModelBooleanInput
+}
+
+input ModelTeilnehmerVeranstaltungConditionInput {
+  teilnehmerId: ModelIDInput
+  veranstaltungId: ModelIDInput
+  and: [ModelTeilnehmerVeranstaltungConditionInput]
+  or: [ModelTeilnehmerVeranstaltungConditionInput]
+  not: ModelTeilnehmerVeranstaltungConditionInput
+  _deleted: ModelBooleanInput
+}
+
+input CreateTeilnehmerVeranstaltungInput {
+  id: ID
+  teilnehmerId: ID!
+  veranstaltungId: ID!
+  _version: Int
+}
+
+input UpdateTeilnehmerVeranstaltungInput {
+  id: ID!
+  teilnehmerId: ID
+  veranstaltungId: ID
+  _version: Int
+}
+
+input DeleteTeilnehmerVeranstaltungInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionTeilnehmerVeranstaltungFilterInput {
+  id: ModelSubscriptionIDInput
+  teilnehmerId: ModelSubscriptionIDInput
+  veranstaltungId: ModelSubscriptionIDInput
+  and: [ModelSubscriptionTeilnehmerVeranstaltungFilterInput]
+  or: [ModelSubscriptionTeilnehmerVeranstaltungFilterInput]
+  _deleted: ModelBooleanInput
+}
